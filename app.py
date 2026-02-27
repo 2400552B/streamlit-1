@@ -71,7 +71,7 @@ native_country = st.selectbox("Native Country", [
     'Ireland', 'Hong', 'Outlying-US(Guam-USVI-etc)'
 ])
 
-# --- Predict ---
+#Predict
 if st.button("Predict"):
     input_data = pd.DataFrame([[
         age, workclass, fnlwgt, education, education_num,
@@ -83,8 +83,15 @@ if st.button("Predict"):
         'capital-gain', 'capital-loss', 'hours-per-week', 'native-country'
     ])
 
-    prediction = model.predict(input_data)[0]
-    probability = model.predict_proba(input_data)[0]
+    # One-hot encode to match training data
+    input_encoded = pd.get_dummies(input_data)
+
+    # Load the training columns and align
+    model_columns = joblib.load('model_columns.pkl')
+    input_encoded = input_encoded.reindex(columns=model_columns, fill_value=0)
+
+    prediction = model.predict(input_encoded)[0]
+    probability = model.predict_proba(input_encoded)[0]
 
     st.write(f"**Prediction:** {prediction}")
     st.write(f"**Confidence:** {probability.max():.2%}")
