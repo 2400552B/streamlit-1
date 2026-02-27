@@ -92,8 +92,6 @@ if st.button("Predict"):
 
     prediction = model.predict(input_encoded)[0]
     probability = model.predict_proba(input_encoded)[0]
-    prediction = model.predict(input_encoded)[0]
-    probability = model.predict_proba(input_encoded)[0]
 
     st.write(f"**Prediction:** {prediction}")
     st.write(f"**Confidence:** {probability.max():.2%}")
