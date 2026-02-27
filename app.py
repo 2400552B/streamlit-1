@@ -85,9 +85,6 @@ if st.button("Predict"):
 
     # One-hot encode to match training data
     input_encoded = pd.get_dummies(input_data)
-
-    # Load the training columns and align
-    model_columns = joblib.load('model_columns.pkl')
     input_encoded = input_encoded.reindex(columns=model_columns, fill_value=0)
 
     prediction = model.predict(input_encoded)[0]
