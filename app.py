@@ -83,10 +83,15 @@ if st.button("Predict"):
         'capital-gain', 'capital-loss', 'hours-per-week', 'native-country'
     ])
 
-    # One-hot encode to match training data
+    # One-hot encode 
     input_encoded = pd.get_dummies(input_data)
     input_encoded = input_encoded.reindex(columns=model_columns, fill_value=0)
 
+    model_columns = joblib.load('model.pkl')
+    input_encoded = input_encoded.reindex(columns=model_columns, fill_value=0)
+
+    prediction = model.predict(input_encoded)[0]
+    probability = model.predict_proba(input_encoded)[0]
     prediction = model.predict(input_encoded)[0]
     probability = model.predict_proba(input_encoded)[0]
 
