@@ -7,7 +7,11 @@ import pandas as pd
 def load_model():
     return joblib.load('model.pkl')
 
+def load_columns():
+    return joblib.load('model_columns.pkl')
+
 model = load_model()
+model_columns = load_columns()
 
 st.title("Income Prediction App")
 st.write("Predict whether income exceeds $50K/yr")
@@ -85,14 +89,11 @@ if st.button("Predict"):
 
     # One-hot encode 
     input_encoded = pd.get_dummies(input_data)
-    input_encoded = input_encoded.reindex(columns=model_columns, fill_value=0)
-
-    model_columns = joblib.load('model.pkl')
+    model_columns = joblib.load('model_columns.pkl')
     input_encoded = input_encoded.reindex(columns=model_columns, fill_value=0)
 
     prediction = model.predict(input_encoded)[0]
     probability = model.predict_proba(input_encoded)[0]
-
     st.write(f"**Prediction:** {prediction}")
     st.write(f"**Confidence:** {probability.max():.2%}")
 
